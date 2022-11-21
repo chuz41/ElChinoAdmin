@@ -1,0 +1,22 @@
+<resources>
+
+    <string name="app_name">El Chino Admin</string>
+
+    <string name="bt_cierre_general">CIERRE GENERAL</string>
+    <string name="bt_hoy">MOVIMIENTOS DEL DIA</string>
+    <string name="bt_caja">CAJA VENDEDORES</string>
+    <string name="bt_finanzas">ESTADO FINANCIERO</string>
+    <string name="bt_cierre_rango">RANGO DE FECHAS</string>
+    <string name="bt_aprob_recha">APROB/RECH SOLICITUD</string>
+
+    <string name="monto_prestado_total">Monto prestado total: </string>
+    <string name="monto_recuperado_total">Monto recuperado total: </string>
+    <string name="monto_en_mora">Monto en mora: </string>
+    <string name="balance_general">Balance general: </string>
+
+    <string name="digite_usuario">Digite su usuario...</string>
+    <string name="usuario">usuario...</string>
+    <string name="digite_password">Digite su usuario...</string>
+    <string name="password">usuario...</string>
+
+</resources>

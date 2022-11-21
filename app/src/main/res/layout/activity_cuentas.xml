@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HoyActivity">
+
+    <TextView
+        android:id="@+id/et_monto_prestado"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="128dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/et_balance_general"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="72dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_monto_mora" />
+
+    <TextView
+        android:id="@+id/et_monto_mora"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="72dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_monto_recuperado" />
+
+    <TextView
+        android:id="@+id/et_monto_recuperado"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="72dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_monto_prestado" />
+
+    <TextView
+        android:id="@+id/tv_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_saludo" />
+
+    <TextView
+        android:id="@+id/tv_saludo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_monto_prestado"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:text="@string/monto_prestado_total"
+        app:layout_constraintBottom_toBottomOf="@+id/et_monto_prestado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_monto_prestado"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_monto_recuperado"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:text="@string/monto_recuperado_total"
+        app:layout_constraintBottom_toBottomOf="@+id/et_monto_recuperado"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_monto_recuperado"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_monto_mora"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:text="@string/monto_en_mora"
+        app:layout_constraintBottom_toBottomOf="@+id/et_monto_mora"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_monto_mora"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_balance_general"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:text="@string/balance_general"
+        app:layout_constraintBottom_toBottomOf="@+id/et_balance_general"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_balance_general"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
