@@ -65,7 +65,7 @@ public class HoyActivity extends AppCompatActivity {
     private Map<String, String> cobradores = new HashMap<String, String>();
     private Map<String, String> cobradores2 = new HashMap<String, String>();
     private Map<String, String> lineas = new HashMap<String, String>();
-    private Map<String, String> lineas2 = new HashMap<String, String>();
+    private Map<Integer, String> lineas2 = new HashMap<Integer, String>();
     private Integer monto_prestado_total = 0;
     private Integer monto_recuperado_total = 0;
     private Integer monto_en_mora_a_hoy = 0;
@@ -480,7 +480,7 @@ split2[47]: },{
                                                 //Do nothing. Aqui se eliminan los archivos repetidos.
                                             } else {
                                                 Log.v("leer_cobros_nube1", "Hoy.\n\nLinea hash: " + "\n\n" + linea_hash + "\n\n.");
-                                                lineas2.put(split2[34], linea_hash);
+                                                lineas2.put(i, linea_hash);
                                                 monto_recuperado_total = monto_recuperado_total + Integer.parseInt(split2[50]);
                                                 monto_en_mora_a_hoy = monto_en_mora_a_hoy + Integer.parseInt(split2[46]);
                                             }
