@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private Button bt_caja;
     private Button bt_hoy;
     private Button bt_cierre_general;
-    private Map<String, Integer> meses = new HashMap<String, Integer>();private String dia;
+    private Map<String, Integer> meses = new HashMap<String, Integer>();
+    private String dia;
     private String mes;
     private String anio;
     private String fecha;
@@ -53,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
     private boolean flag_pedir_cambio = false;
     private String password1 = "";
     private String password2 = "";
+    private String retorno = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv_saludo = (TextView) findViewById(R.id.tv_saludo);
+        retorno = getIntent().getStringExtra("retorno");
         tv_saludo.setText("*** MENU PRINCIPAL ***");
         tv_esperar = (TextView) findViewById(R.id.tv_esperar);
         tv_esperar.setVisibility(View.INVISIBLE);
@@ -75,7 +78,80 @@ public class MainActivity extends AppCompatActivity {
         String fecha_hoy = fecha + "/" + mes + "/" + anio;
         tv_fecha.setText(fecha_hoy);
         flag_salir = false;
-        revisar_archivos_autent();
+        crear_archivos_config();
+        if (retorno != null) {
+            if (retorno.equals("logedIn")) {
+                mostrar_todo();
+            } else {
+                revisar_archivos_autent();
+            }
+        } else {
+            revisar_archivos_autent();
+        }
+    }
+
+    private void crear_archivos_config() {
+
+        String[] archivos = fileList();
+
+        if (archivo_existe(archivos, "creditos.txt")) {
+            //Do nothitng.
+        } else  {
+            crear_archivo("creditos.txt");
+        }
+
+        if (archivo_existe(archivos, "abonos.txt")) {
+            //Do nothitng.
+        } else  {
+            crear_archivo("abonos.txt");
+        }
+
+    }
+
+    private String obtener_dia_espaniol (String dia_ingles) {
+        //Sun, Mon, Tue, Wed, Thu, Fri, Sat.
+        String flag = "";
+        if (dia_ingles.equals("Sun")) {
+            flag = "Domingo";
+        } else if (dia_ingles.equals("Mon")) {
+            flag = "Lunes";
+        } else if (dia_ingles.equals("Tue")) {
+            flag = "Martes";
+        } else if (dia_ingles.equals("Wed")) {
+            flag = "Miercoles";
+        } else if (dia_ingles.equals("Thu")) {
+            flag = "Jueves";
+        } else if (dia_ingles.equals("Fri")) {
+            flag = "Viernes";
+        } else if (dia_ingles.equals("Sat")) {
+            flag = "Sabado";
+        } else {
+            //Do nothing.
+        }
+        return flag;
+    }
+
+    private String obtener_dia_ingles (String dia_espaniol) {
+        //Sun, Mon, Tue, Wed, Thu, Fri, Sat.
+        String flag = "";
+        if (dia_espaniol.equals("Domingo")) {
+            flag = "Sun";
+        } else if (dia_espaniol.equals("Lunes")) {
+            flag = "Mon";
+        } else if (dia_espaniol.equals("Martes")) {
+            flag = "Tue";
+        } else if (dia_espaniol.equals("Miercoles")) {
+            flag = "Wed";
+        } else if (dia_espaniol.equals("Jueves")) {
+            flag = "Thu";
+        } else if (dia_espaniol.equals("Viernes")) {
+            flag = "Fri";
+        } else if (dia_espaniol.equals("Sabado")) {
+            flag = "Sat";
+        } else {
+            //Do nothing.
+        }
+        return flag;
     }
 
     private void ocultar_todo () {

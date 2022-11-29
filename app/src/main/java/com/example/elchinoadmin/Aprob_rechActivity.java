@@ -22,6 +22,7 @@ public class Aprob_rechActivity extends AppCompatActivity {
 
     private void boton_atras() {
         Intent Main = new Intent(this, MainActivity.class);
+        Main.putExtra("retorno", "logedIn");
         startActivity(Main);
         finish();
         System.exit(0);
