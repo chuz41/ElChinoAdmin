@@ -118,4 +118,42 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_saludo"
         app:layout_constraintVertical_bias="0.13" />
 
+    <Button
+        android:id="@+id/bt_fecha_inicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fecha_inicial"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <Button
+        android:id="@+id/bt_fecha_fin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fecha_fin"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <Button
+        android:id="@+id/bt_confirmar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirmar"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_saludo"
+        app:layout_constraintVertical_bias="0.278" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,10 @@
     <string name="monto_prestado_total">Monto prestado total: </string>
     <string name="monto_recuperado_total">Monto recuperado total: </string>
     <string name="monto_en_mora">Monto en mora: </string>
+    <string name="fecha_inicial">FECHA INICIO</string>
+    <string name="fecha_fin">FECHA FIN</string>
     <string name="balance_general">Balance general: </string>
+    <string name="confirmar">CONFIRMAR</string>
 
     <string name="digite_usuario">Digite su usuario...</string>
     <string name="usuario">usuario...</string>
