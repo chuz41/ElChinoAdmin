@@ -41,7 +41,9 @@ import java.util.Map;
 
 public class Cierre_rangoActivity extends AppCompatActivity {
 
-    private Map<String, Integer> meses = new HashMap<String, Integer>();private String dia;
+    private Map<String, Integer> meses = new HashMap<String, Integer>();
+    private String dia;
+    private Integer contador_puntos = 0;
     private String mes;
     private String anio;
     private String fecha;
@@ -118,6 +120,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
 
+
         ocultar_todo("buscando...");
 
         revisar_cobradores();
@@ -173,7 +176,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         bt_fecha_inicio.setVisibility(View.VISIBLE);
         bt_fecha_fin.setVisibility(View.VISIBLE);
         bt_confirmar.setVisibility(View.VISIBLE);
-        tv_monto_recuperado.setVisibility(View.INVISIBLE);
+        //tv_monto_recuperado.setVisibility(View.INVISIBLE);
         onClickListener();
         onClickListener2();
         Log.v("obtener_ventas_rango0", "Cierre_rango.\n\nobtener rangos con un loop for.\n\n.");
@@ -418,7 +421,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
             String fecha_siguiente = DateUtilities.dateToString(fecha_param);
             String[] split_fecha_sig = fecha_siguiente.split("-");
             fecha_siguiente = split_fecha_sig[2] + "/" + split_fecha_sig[1] + "/" + split_fecha_sig[0];
-
+            et_monto_recuperado.setText(fecha_siguiente);
             String[] split_sig = fecha_siguiente.split("/");
             String comp_sig = split_sig[2] + split_sig[1] + split_sig[0];
             String fecha_sig_S = split_sig[2] + "-" + split_sig[1] + "-" + split_sig[0];
@@ -430,13 +433,14 @@ public class Cierre_rangoActivity extends AppCompatActivity {
 
             if (comp_sig_I > comp_fin_I) {
                 msg("Lectura completa!");
+                balance_general = monto_recuperado_total - monto_prestado_total;
                 mostrar_todo();
                 break;
             } else {
                 Date fecha_sig_D = DateUtilities.stringToDate(fecha_sig_S);
                 Log.v("OnClickListener32", "Cierre_rango.\n\nDate inicio:\n\n" + fecha_sig_D.toString() + "\n\n.");
                 String[] split_sig_D = fecha_sig_D.toString().split(" ");
-                String sheet_fechada = split_sig_D[0] + "-" + split_sig_D[1] + "-" + split_sig_D[2]  + "-creditos";
+                String sheet_fechada = split_sig_D[0] + "-" + split_sig_D[1] + "-" + split_sig_D[2] + "-" + split_sig_D[5] + "-creditos";
                 HashMap<String, String> cobradores_helper = new HashMap<String, String>();
                 HashMap<String, String> cobradores_helper2 = new HashMap<String, String>();
                 cobradores_helper.putAll(cobradores);
@@ -461,6 +465,8 @@ public class Cierre_rangoActivity extends AppCompatActivity {
                 Log.v("onClickListener30", "\n\nCierre_rango.\n\n.");
 
                 String[] split_inicio = bt_fecha_inicio.getText().toString().split("/");
+                et_monto_recuperado.setVisibility(View.VISIBLE);
+                et_monto_recuperado.setText(bt_fecha_inicio.getText().toString());
                 String comp_inicio = split_inicio[2] + split_inicio[1] + split_inicio[0];
                 String fecha_inicio_S = split_inicio[2] + "-" + split_inicio[1] + "-" + split_inicio[0];
                 int comp_inicio_I = Integer.parseInt(comp_inicio);
@@ -468,6 +474,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
                 String comp_fin = split_fin[2] + split_fin[1] + split_fin[0];
                 String fecha_fin_S = split_fin[2] + "-" + split_fin[1] + "-" + split_fin[0];
                 int comp_fin_I = Integer.parseInt(comp_fin);
+                //lineas.clear();
 
                 if (comp_inicio_I >= comp_fin_I) {
                     msg("La fecha inicial debe ser menor a la fecha final!");
@@ -476,6 +483,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
                     bt_fecha_fin.setEnabled(true);
                     bt_fecha_fin.setClickable(true);
                     ocultar_todo("buscando...");
+                    //lineas.clear();
                     revisar_cobradores();
                 } else {
                     Date fecha_inicio_D = null;
@@ -487,7 +495,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
                     }
                     Log.v("OnClickListener31", "Cierre_rango.\n\nDate inicio:\n\n" + fecha_inicio_D.toString() + "\n\n.");
                     String[] split_inicio_D = fecha_inicio_D.toString().split(" ");
-                    String sheet_fechada = split_inicio_D[0] + "-" + split_inicio_D[1] + "-" + split_inicio_D[2]  + "-creditos";
+                    String sheet_fechada = split_inicio_D[0] + "-" + split_inicio_D[1] + "-" + split_inicio_D[2] + "-" + split_inicio_D[5]  + "-creditos";
                     HashMap<String, String> cobradores_helper = new HashMap<String, String>();
                     HashMap<String, String> cobradores_helper2 = new HashMap<String, String>();
                     cobradores_helper.putAll(cobradores);
@@ -565,6 +573,8 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         tv_balance_general.setVisibility(View.VISIBLE);
         tv_monto_mora.setVisibility(View.VISIBLE);
         bt_confirmar.setVisibility(View.INVISIBLE);
+        bt_fecha_fin.setVisibility(View.VISIBLE);
+        bt_fecha_inicio.setVisibility(View.VISIBLE);
     }
 
     private void ocultar_todo (String mensaje) {
@@ -575,7 +585,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         tv_monto_prestado.setVisibility(View.INVISIBLE);
         tv_balance_general.setVisibility(View.INVISIBLE);
         tv_monto_mora.setVisibility(View.INVISIBLE);
-        et_monto_recuperado.setVisibility(View.INVISIBLE);
+        //et_monto_recuperado.setVisibility(View.INVISIBLE);
         bt_confirmar.setVisibility(View.INVISIBLE);
         bt_fecha_inicio.setVisibility(View.INVISIBLE);
         bt_fecha_fin.setVisibility(View.INVISIBLE);
@@ -586,7 +596,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
 
         if (cobradores_helper1.isEmpty()) {
             //Do nothing.
-            mostrar_todo();
+            //mostrar_todo();
             sheet = sheet.replace("creditos", "abonos");
             leer_cobros_de_hoy(cobradores_helper2, sheet);
         } else {
@@ -691,7 +701,16 @@ split2[47]: },{
         linea = "";
         //sheet_creditos = "creditos";
         //sheet_abonos = "abonos";
-        ocultar_todo("Ventas de " + apodo_cobrador + ",\npor favor espere...");
+
+        String mensaje_ocultar = "Leyendo datos\ndel servidor";
+        for(int i = 0; i < contador_puntos; i++) {
+            mensaje_ocultar = mensaje_ocultar + ".";
+        }
+        contador_puntos++;
+        if (contador_puntos > 5) {
+            contador_puntos = 0;
+        }
+        ocultar_todo(mensaje_ocultar);
 
         if (verificar_internet()) {
             RequestQueue requestQueue;
@@ -753,7 +772,7 @@ split2[47]: },{
                                 } else {
                                     //Do nothing.
                                 }
-                                mostrar_todo();
+                                //mostrar_todo();
                                 try {
                                     revisar_ventas_de_hoy(cobradores_helper1, cobradores_helper2, sheet);
                                 } catch (ParseException e) {
@@ -839,7 +858,15 @@ split2[47]: },{
         linea = "";
         //sheet_creditos = "creditos";
         //sheet_abonos = "abonos";
-        ocultar_todo("Cobros de " + apodo_cobrador + ",\npor favor espere...");
+        String mensaje_ocultar = "Leyendo datos\ndel servidor";
+        for(int i = 0; i < contador_puntos; i++) {
+            mensaje_ocultar = mensaje_ocultar + ".";
+        }
+        contador_puntos++;
+        if (contador_puntos > 5) {
+            contador_puntos = 0;
+        }
+        ocultar_todo(mensaje_ocultar);
 
         if (verificar_internet()) {
             RequestQueue requestQueue;
@@ -898,7 +925,7 @@ split2[47]: },{
                                 } else {
                                     //Do nothing.
                                 }
-                                mostrar_todo();
+                                //mostrar_todo();
                                 try {
                                     leer_cobros_de_hoy(cobradores_helper2, sheet);
                                 } catch (ParseException e) {
@@ -926,10 +953,11 @@ split2[47]: },{
 
     private void revisar_cobradores () {
 
-        ocultar_todo("Conectando,\npor favor espere...");
+        ocultar_todo("Leyendo datos del servidor,\npor favor espere.");
 
         cobradores.clear();
         cobradores2.clear();
+        lineas.clear();
         if (verificar_internet()) {
             RequestQueue requestQueue;
 
