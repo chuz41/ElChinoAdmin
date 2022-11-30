@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -12,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Cache;
@@ -26,11 +29,13 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elchinoadmin.Util.DateUtilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,6 +75,11 @@ public class HoyActivity extends AppCompatActivity {
     private Integer monto_recuperado_total = 0;
     private Integer monto_en_mora_a_hoy = 0;
     private Integer balance_general = 0;
+    private Button bt_cambiar_fecha;
+    private int mes_I = 0;
+    private int anio_I = 0;
+    private int fecha_I = 0;;
+    private Date fecha_hoy = new Date();
 
 
     @Override
@@ -88,6 +98,19 @@ public class HoyActivity extends AppCompatActivity {
         tv_balance_general = (TextView) findViewById(R.id.tv_balance_general);
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
         tv_monto_recuperado = (TextView) findViewById(R.id.tv_monto_recuperado);
+        bt_cambiar_fecha = (Button) findViewById(R.id.bt_cambiar_fecha);
+
+        Date fecha_hoy_D = Calendar.getInstance().getTime();
+        String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
+        String[] split_fecha_hoy = fecha_hoy_S.split("-");
+        fecha_hoy_S = split_fecha_hoy[2] + "/" + split_fecha_hoy[1] + "/" + split_fecha_hoy[0];
+        String[] split_fecha_hoy_s = fecha_hoy_S.split("/");
+        fecha_hoy_S = split_fecha_hoy_s[2] + "-" + split_fecha_hoy_s[1] + "-" + split_fecha_hoy_s[0];
+        try {
+            fecha_hoy = DateUtilities.stringToDate(fecha_hoy_S);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
@@ -98,7 +121,7 @@ public class HoyActivity extends AppCompatActivity {
 
     private void separar_fechaYhora (){
         llenar_mapa_meses();
-        Date now = Calendar.getInstance().getTime();
+        Date now = fecha_hoy;
         String ahora = now.toString();
         String[] split = ahora.split(" ");
         nombre_dia = split[0];
@@ -159,6 +182,7 @@ public class HoyActivity extends AppCompatActivity {
         tv_monto_prestado.setVisibility(View.VISIBLE);
         tv_balance_general.setVisibility(View.VISIBLE);
         tv_monto_mora.setVisibility(View.VISIBLE);
+        bt_cambiar_fecha.setVisibility(View.VISIBLE);
     }
 
     private void ocultar_todo (String mensaje) {
@@ -170,6 +194,7 @@ public class HoyActivity extends AppCompatActivity {
         tv_balance_general.setVisibility(View.INVISIBLE);
         tv_monto_mora.setVisibility(View.INVISIBLE);
         et_monto_recuperado.setVisibility(View.INVISIBLE);
+        bt_cambiar_fecha.setVisibility(View.INVISIBLE);
     }
 
     private void revisar_ventas_de_hoy () {
@@ -199,6 +224,7 @@ public class HoyActivity extends AppCompatActivity {
         if (cobradores2.isEmpty()) {
             balance_general = monto_recuperado_total - monto_prestado_total;
             mostrar_todo();
+            onClickListener();
         } else {
 
             for (String key : cobradores2.keySet()) {
@@ -210,6 +236,79 @@ public class HoyActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void onClickListener () {
+        bt_cambiar_fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cambiar_fecha();
+
+            }
+        });
+    }
+
+    private void cambiar_fecha () {
+        final Calendar c = Calendar.getInstance();
+        //final boolean[] edad_permitida = {true};
+        mes_I = (c.get(Calendar.MONTH));
+        //Toast.makeText(bt_fecha_inicio.getContext(), "mes: " + mes_inicio, Toast.LENGTH_SHORT).show();
+        anio_I = c.get(Calendar.YEAR);
+        fecha_I = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                //edad_cliente.autofill(AutofillValue.forText(String.valueOf(i2) + "/" + String.valueOf(i1+1) + "/" + String.valueOf(i)));
+                mes_I = i1+1;
+                anio_I = i;
+                fecha_I = i2;
+                //flag_fecha = true;
+                String i_s = String.valueOf(anio_I);
+                String i1_s = String.valueOf(mes_I);
+                String i2_s = String.valueOf(fecha_I);
+                if (i1_s.length() == 1) {
+                    i1_s = "0" + i1_s;
+                }
+                if (i2_s.length() == 1) {
+                    i2_s = "0" + i2_s;
+                }
+                String mes_S = i1_s;
+                String anio_S = i_s;
+                String fecha_S = i2_s;
+                mes = mes_S;
+                anio = anio_S;
+                fecha = fecha_S;
+                String fecha_hoy_S = anio + "-" + mes + "-" + fecha;
+                try {
+                    fecha_hoy = DateUtilities.stringToDate(fecha_hoy_S);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                separar_fechaYhora();
+                tv_fecha.setText(dia + "/" + mes + "/" + anio);
+
+                //Date fecha_D = DateUtilities.stringToDate(fecha_sig_S);
+                Log.v("cambiar_fecha0", "Hoy.\n\nDate inicio:\n\n" + fecha_hoy.toString() + "\n\n.");
+                String[] split_hoy_D = fecha_hoy.toString().split(" ");
+                sheet_creditos = split_hoy_D[0] + "-" + split_hoy_D[1] + "-" + split_hoy_D[2] + "-" + split_hoy_D[5] + "-creditos";
+                sheet_abonos = split_hoy_D[0] + "-" + split_hoy_D[1] + "-" + split_hoy_D[2] + "-" + split_hoy_D[5] + "-abonos";
+                tv_saludo.setText("Cierre del dia: ");
+                monto_en_mora_a_hoy = 0;
+                monto_prestado_total = 0;
+                monto_recuperado_total = 0;
+                cobradores.clear();
+                cobradores2.clear();
+                lineas.clear();
+                lineas2.clear();
+                revisar_cobradores();
+                //fecha_mostrar_inicio = (i2_s + "/" + i1_s + "/" + i_s);
+                Log.v("cambiar_fecha1", "Hoy.\n\nFecha antes de sumarle uno al mes:\n\n" + i2_s + "/" + i1_s + "/" + i_s + "\n\n.");
+                Log.v("cambiar_fecha2", "Hoy.\n\nFecha despues de sumarle uno al mes:\n\n" + String.valueOf(fecha_S) + "/" + String.valueOf(mes_S) + "/" + String.valueOf(anio_S));
+            }
+        },anio_I,mes_I,fecha_I);
+        datePickerDialog.show();
     }
 
     private boolean linea_existe (String linea) {

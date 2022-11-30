@@ -16,7 +16,7 @@
     <string name="fecha_fin">FECHA FIN</string>
     <string name="balance_general">Balance general: </string>
     <string name="confirmar">CONFIRMAR</string>
-
+    <string name="cambiar_fecha">CAMBIAR FECHA</string>
     <string name="digite_usuario">Digite su usuario...</string>
     <string name="usuario">usuario...</string>
     <string name="digite_password">Digite su usuario...</string>

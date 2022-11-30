@@ -89,6 +89,7 @@ public class Cierre_rangoActivity extends AppCompatActivity {
     private int fecha_fin = 0;
     private Button bt_confirmar;
     private Date fecha_param = new Date();
+    private Date fecha_hoy = new Date();
 
 
     @Override
@@ -116,6 +117,17 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         bt_confirmar.setClickable(false);
         bt_confirmar.setEnabled(false);
 
+        Date fecha_hoy_D = Calendar.getInstance().getTime();
+        String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
+        String[] split_fecha_hoy = fecha_hoy_S.split("-");
+        fecha_hoy_S = split_fecha_hoy[2] + "/" + split_fecha_hoy[1] + "/" + split_fecha_hoy[0];
+        String[] split_fecha_hoy_s = fecha_hoy_S.split("/");
+        fecha_hoy_S = split_fecha_hoy_s[2] + "-" + split_fecha_hoy_s[1] + "-" + split_fecha_hoy_s[0];
+        try {
+            fecha_hoy = DateUtilities.stringToDate(fecha_hoy_S);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
@@ -131,8 +143,9 @@ public class Cierre_rangoActivity extends AppCompatActivity {
 
     private void separar_fechaYhora (){
         llenar_mapa_meses();
-        Date now = Calendar.getInstance().getTime();
+        Date now = fecha_hoy;
         String ahora = now.toString();
+        Log.v("separar_fechaYhora0", "Cierre_rango.\n\nahora:\n\n" + ahora + "\n\n.");
         String[] split = ahora.split(" ");
         nombre_dia = split[0];
         dia = split[2];
@@ -475,8 +488,21 @@ public class Cierre_rangoActivity extends AppCompatActivity {
                 String fecha_fin_S = split_fin[2] + "-" + split_fin[1] + "-" + split_fin[0];
                 int comp_fin_I = Integer.parseInt(comp_fin);
                 //lineas.clear();
+                String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy);
+                String[] split_hoy = fecha_hoy_S.split("-");
+                String comp_hoy = split_hoy[0] + split_hoy[1] + split_hoy[2];
+                int comp_hoy_I = Integer.parseInt(comp_hoy);
 
-                if (comp_inicio_I >= comp_fin_I) {
+                if (comp_fin_I >= comp_hoy_I) {
+                    msg("La fecha final debe ser anterior a hoy!");
+                    bt_fecha_inicio.setEnabled(true);
+                    bt_fecha_inicio.setClickable(true);
+                    bt_fecha_fin.setEnabled(true);
+                    bt_fecha_fin.setClickable(true);
+                    ocultar_todo("buscando...");
+                    //lineas.clear();
+                    revisar_cobradores();
+                } else if (comp_inicio_I >= comp_fin_I) {
                     msg("La fecha inicial debe ser menor a la fecha final!");
                     bt_fecha_inicio.setEnabled(true);
                     bt_fecha_inicio.setClickable(true);
@@ -552,12 +578,6 @@ public class Cierre_rangoActivity extends AppCompatActivity {
     }
 
     private void mostrar_todo () {
-        /*
-        monto_prestado_total = 0;
-        monto_recuperado_total = 0;
-        monto_en_mora_a_hoy = 0;
-        balance_general = 0;
-         */
 
         et_monto_mora.setVisibility(View.VISIBLE);
         et_monto_mora.setText(String.valueOf(monto_en_mora_a_hoy) + " colones");
@@ -617,8 +637,6 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         ocultar_todo("Obteniendo cobros de hoy...");
 
         if (cobradores_helper2.isEmpty()) {
-            //balance_general = monto_recuperado_total - monto_prestado_total;
-            //mostrar_todo();
             funcion_loop();
         } else {
 
@@ -761,7 +779,6 @@ split2[47]: },{
                                                     Log.v("leer_ventas_nube1", "Hoy.\n\nLinea hash: " + "\n\n" + linea_hash + "\n\n.");
                                                     lineas.put(split2[34], linea_hash);
                                                     monto_prestado_total = monto_prestado_total + Integer.parseInt(split2[2]);
-                                                    //monto_en_mora_a_hoy = monto_en_mora_a_hoy + Integer.parseInt(split2[46]);
                                                 }
                                             }
                                         } else {
