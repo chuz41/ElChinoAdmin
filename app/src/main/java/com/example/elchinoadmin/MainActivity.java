@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         bt_cierre_general.setClickable(true);
         bt_cierre_general.setVisibility(View.VISIBLE);
         bt_cierre_rango.setVisibility(View.VISIBLE);
-        bt_finanzas.setText("ESTADO FINANCIERO");
+        bt_finanzas.setText("VER VENDEDOR");
         bt_caja.setVisibility(View.VISIBLE);
         bt_hoy.setVisibility(View.VISIBLE);
 
