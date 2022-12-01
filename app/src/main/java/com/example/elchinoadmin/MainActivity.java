@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity {
             crear_archivo("abonos.txt");
         }
 
+        if (archivo_existe(archivos, "solicitudes.txt")) {
+            //Do nothitng.
+        } else  {
+            crear_archivo("solicitudes.txt");
+        }
+
     }
 
     private String obtener_dia_espaniol (String dia_ingles) {

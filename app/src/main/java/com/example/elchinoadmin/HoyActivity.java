@@ -163,12 +163,6 @@ public class HoyActivity extends AppCompatActivity {
     }
 
     private void mostrar_todo () {
-        /*
-        monto_prestado_total = 0;
-        monto_recuperado_total = 0;
-        monto_en_mora_a_hoy = 0;
-        balance_general = 0;
-         */
 
         et_monto_mora.setVisibility(View.VISIBLE);
         et_monto_mora.setText(String.valueOf(monto_en_mora_a_hoy) + " colones");
