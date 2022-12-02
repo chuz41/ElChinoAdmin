@@ -7,18 +7,6 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/bt_cierre_general"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="cierre_gen"
-        android:text="@string/bt_cierre_general"
-        app:layout_constraintBottom_toTopOf="@+id/bt_aprob_recha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888" />
-
-    <Button
         android:id="@+id/bt_hoy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,6 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.542" />
+
+    <Button
+        android:id="@+id/bt_agregar_cobrador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="agregar_cobrador"
+        android:text="@string/bt_agregar_cobrador"
+        app:layout_constraintBottom_toTopOf="@+id/bt_aprob_recha"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.888" />
 
     <Button
         android:id="@+id/bt_caja"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:onClick="cierre_rang"
         android:text="@string/bt_cierre_rango"
-        app:layout_constraintBottom_toTopOf="@+id/bt_cierre_general"
+        app:layout_constraintBottom_toTopOf="@+id/bt_agregar_cobrador"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -139,10 +139,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_saludo"
-        app:layout_constraintVertical_bias="0.709" />
+        app:layout_constraintVertical_bias="0.838" />
 
     <Button
         android:id="@+id/bt_fecha_fin"
@@ -156,6 +156,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.089" />
+
+    <Button
+        android:id="@+id/bt_volver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_volver"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_cambiar_fecha" />
 
     <Button
         android:id="@+id/bt_confirmar"
@@ -184,7 +195,7 @@
 
     <TextView
         android:id="@+id/tv_multiline"
-        android:layout_width="wrap_content"
+        android:layout_width="331dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
@@ -196,5 +207,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_auxiliar"
         app:layout_constraintVertical_bias="0.029" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

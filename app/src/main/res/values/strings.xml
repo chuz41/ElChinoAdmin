@@ -2,9 +2,10 @@
 
     <string name="app_name">El Chino Admin</string>
 
-    <string name="bt_cierre_general">CIERRE GENERAL</string>
+    <string name="bt_agregar_cobrador">AGREGAR COBRADOR</string>
     <string name="bt_hoy">MOVIMIENTOS DEL DIA</string>
     <string name="bt_caja">CAJA VENDEDORES</string>
+    <string name="bt_volver">VOLVER</string>
     <string name="bt_finanzas">VER COBRADOR</string>
     <string name="bt_cierre_rango">RANGO DE FECHAS</string>
     <string name="bt_aprob_recha">APROB/RECH SOLICITUD</string>

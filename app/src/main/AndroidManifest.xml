@@ -16,14 +16,14 @@
         android:theme="@style/Theme.ElChinoAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".Aprob_rechActivity"
+            android:name=".Agregar_cobrador"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Cierre_generalActivity"
+            android:name=".Aprob_rechActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

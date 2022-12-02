@@ -72,12 +72,14 @@ public class Aprob_rechActivity extends AppCompatActivity {
     private Map<String, String> cobradores2 = new HashMap<String, String>();
     private Map<String, String> lineas = new HashMap<String, String>();
     private Map<String, String> solicitudes = new HashMap<String, String>();
+    private Map<String, String> solicitudes2 = new HashMap<String, String>();
     private Map<Integer, String> lineas2 = new HashMap<Integer, String>();
     private Integer monto_prestado_total = 0;
     private Integer monto_recuperado_total = 0;
     private Integer monto_en_mora_a_hoy = 0;
     private Integer balance_general = 0;
     private Button bt_cambiar_fecha;
+    private Button bt_volver;
     private int mes_I = 0;
     private int anio_I = 0;
     private int fecha_I = 0;;
@@ -106,6 +108,7 @@ public class Aprob_rechActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
         tv_auxiliar = (TextView) findViewById(R.id.tv_auxiliar);
         tv_multiline = (TextView) findViewById(R.id.tv_multiline);
+        bt_volver = (Button) findViewById(R.id.bt_volver);
         Date fecha_hoy_D = Calendar.getInstance().getTime();
         String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
         String[] split_fecha_hoy = fecha_hoy_S.split("-");
@@ -259,23 +262,29 @@ split2[35]: }]
             BufferedReader br = new BufferedReader(archivo);
             String linea = br.readLine();
             while (linea != null) {
-                for (String key : solicitudes.keySet()) {
-                    String value = solicitudes.get(key);
-                    if (linea.equals(value)) {
-                        solicitudes.remove(key);
-                    } else {
-                        //Do nothing. La linea de abajo va en la funcion guardar o aprobar.
-                        //agregar_linea_archivo(solicitudes_file, value);
-                    }
-                    Log.v("comprobar_aprobadas0", "Aprob_rech.\n\nKey: " + key + "\nValue: " + value);
-                }
+                loop_comprobar(linea);
                 linea = br.readLine();
             }
             br.close();
             archivo.close();
         } catch (IOException e) {
         }
+        solicitudes2.clear();
+        solicitudes2.putAll(solicitudes);
         llenar_spinner();
+    }
+
+    private void loop_comprobar (String linea) {
+        for (String key : solicitudes2.keySet()) {
+            String value = solicitudes2.get(key);
+            if (linea.equals(value)) {
+                solicitudes.remove(key);
+            } else {
+                //Do nothing. La linea de abajo va en la funcion guardar o aprobar.
+                //agregar_linea_archivo(solicitudes_file, value);
+            }
+            Log.v("loop_aprobar0", "Aprob_rech.\n\nKey: " + key + "\nValue: " + value);
+        }
     }
 
     private void llenar_spinner () {
@@ -315,6 +324,7 @@ split2[35]: }]
                         if (seleccion.equals("Ver solicitudes...")) {
                             //Do nothing!
                         } else {
+
                             mostrar_solicitud(seleccion);
                         }
                     }
@@ -331,13 +341,14 @@ split2[35]: }]
         String nombre_vendedor = splits[0];
         String value = solicitudes.get(solicitud_ID);
         String[] split = value.split("_sepa_linea_");
-        String mensaje = split[3];
+        String monto_perdonado = split[5];
+        String mensaje = "\n\n\n\nMonto perdonado: " + monto_perdonado + " colones.\n\n\nMensaje:\n\n" + split[3];
         mostrar_todo();
-        //tv_auxiliar.setVisibility(View.VISIBLE);
+        tv_monto_recuperado.setVisibility(View.INVISIBLE);
         tv_auxiliar.setText("Solicitud #" + solicitud_ID + " " + nombre_vendedor);
-        //tv_multiline.setVisibility(View.VISIBLE);
         tv_multiline.setText(mensaje);
         onClickListener(value);
+        onClickListener2();
 
     }
 
@@ -432,13 +443,13 @@ split2[47]: },{
                             //Log.v("rev_ventas_hoy0", ".\nResponse:\n" + response);
                             if (response != null) {
                                 cobradores.remove(key);
-                                String[] split = response.split("solicitud");
+                                String[] split = response.split("solicitud_ID");
                                 if (split.length > 0) {
                                     for (int i = 0; i < split.length; i++) {
                                         String[] split2 = split[i].split("\"");
-                                        Log.v("leer_solic_nube0", "Aprob_rech.\n\nSplit.length: " + split.length + "\n\nsplit[" + i + "]: " + split[i] + "\n\n.");
-                                        if (split2.length > 1) {//solicitud ID [0]           valor ID [1]                 mensaje [2]              valor mensaje [3]               apodo [4]
-                                            String linea_hash = split2[0] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split[4] + "_sepa_linea_" + split[6] + "_sepa_linea_" + apodo_cobrador;
+                                        Log.v("leer_solic_nube0", "Aprob_rech.\n\nsplit.length: " + split.length + "\n\nsplit[" + i + "]: " + split[i] + "\n\n.");
+                                        if (split2.length > 1) {//solicitud ID [0]           valor ID [1]                 mensaje [2]              valor mensaje [3]                  apodo [4]                  monto perdonado [5]
+                                            String linea_hash = split2[0] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split2[4] + "_sepa_linea_" + split2[6] + "_sepa_linea_" + apodo_cobrador + "_sepa_linea_" + split2[10];
                                             Log.v("leer_solic_nube1", "Caja.\n\nlinea_hash: " + linea_hash + "\n\n.");
                                             if (lineas.containsValue(linea_hash)) {
                                                 //Do nothing. Aqui se eliminan los archivos repetidos.
@@ -446,6 +457,7 @@ split2[47]: },{
                                                 Log.v("leer_solic_nube2", "Aprob_rech.\n\nLinea hash: " + "\n\n" + linea_hash + "\n\n.");
                                                 lineas.put(String.valueOf(i), linea_hash);
                                                 solicitudes.put(split2[2], linea_hash);
+                                                solicitudes2.put(split2[2], linea_hash);
                                             }
                                         } else {
                                             //Do nothing. Continue...
@@ -478,23 +490,13 @@ split2[47]: },{
 
     private void mostrar_todo () {
 
-        //et_monto_mora.setVisibility(View.VISIBLE);
-        //et_monto_mora.setText(String.valueOf(monto_en_mora_a_hoy) + " colones");
-        //et_monto_prestado.setVisibility(View.VISIBLE);
-        //et_monto_prestado.setText(String.valueOf(monto_prestado_total) + " colones");
-        //et_balance_general.setVisibility(View.VISIBLE);
-        //et_balance_general.setText(String.valueOf(balance_general) + " colones");
-        //et_monto_recuperado.setVisibility(View.VISIBLE);
-        //et_monto_recuperado.setText(String.valueOf(monto_recuperado_total) + " colones");
-        //tv_monto_recuperado.setText("Monto recuperado total:");
-        //tv_monto_prestado.setVisibility(View.VISIBLE);
-        //tv_balance_general.setVisibility(View.VISIBLE);
-        //tv_monto_mora.setVisibility(View.VISIBLE);
         bt_cambiar_fecha.setVisibility(View.VISIBLE);
         bt_cambiar_fecha.setText("APROBAR");
         tv_auxiliar.setVisibility(View.VISIBLE);
         tv_multiline.setVisibility(View.VISIBLE);
-        //onClickListener();
+        bt_volver.setVisibility(View.VISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
+
     }
 
     private void ocultar_todo (String mensaje) {
@@ -505,10 +507,12 @@ split2[47]: },{
         tv_monto_prestado.setVisibility(View.INVISIBLE);
         tv_balance_general.setVisibility(View.INVISIBLE);
         tv_monto_mora.setVisibility(View.INVISIBLE);
-        et_monto_recuperado.setVisibility(View.INVISIBLE);
+        et_monto_recuperado.setVisibility(View.VISIBLE);
         bt_cambiar_fecha.setVisibility(View.INVISIBLE);
         tv_auxiliar.setVisibility(View.INVISIBLE);
         tv_multiline.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.VISIBLE);
+        bt_volver.setVisibility(View.INVISIBLE);
     }
 
     private void onClickListener (String linea) {
@@ -522,14 +526,25 @@ split2[47]: },{
         });
     }
 
+    private void onClickListener2 () {
+        bt_volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                comprobar_aprobadas();
+
+            }
+        });
+    }
+
     private void archivar_solicitud (String linea) {
 
         agregar_linea_archivo(solicitudes_file, linea);
         msg("Solicitud archivada!!!");
-        cobradores.clear();
-        cobradores.putAll(cobradores2);
+        //cobradores.clear();
+        //cobradores.putAll(cobradores2);
         mostrar_todo();
-        revisar_solicitudes_de_hoy();
+        comprobar_aprobadas();
     }
 
     public  void agregar_linea_archivo (String new_line, String file_name) {

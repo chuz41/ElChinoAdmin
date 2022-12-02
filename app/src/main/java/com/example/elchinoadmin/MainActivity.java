@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button bt_finanzas;
     private Button bt_caja;
     private Button bt_hoy;
-    private Button bt_cierre_general;
+    private Button bt_agregar_cobrador;
     private Map<String, Integer> meses = new HashMap<String, Integer>();
     private String dia;
     private String mes;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         bt_caja = (Button) findViewById(R.id.bt_caja);
         bt_hoy = (Button) findViewById(R.id.bt_hoy);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
-        bt_cierre_general = (Button) findViewById(R.id.bt_cierre_general);
+        bt_agregar_cobrador = (Button) findViewById(R.id.bt_agregar_cobrador);
         separar_fechaYhora();
         String fecha_hoy = fecha + "/" + mes + "/" + anio;
         tv_fecha.setText(fecha_hoy);
@@ -164,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
         tv_saludo.setText("Login...");
         tv_esperar.setVisibility(View.VISIBLE);
         et_ID.setVisibility(View.VISIBLE);
-        bt_cierre_general.setText("CAMBIAR PASSWORD");
+        bt_agregar_cobrador.setText("CAMBIAR PASSWORD");
         bt_aprob_recha.setVisibility(View.INVISIBLE);
-        bt_cierre_general.setVisibility(View.INVISIBLE);
+        bt_agregar_cobrador.setVisibility(View.INVISIBLE);
         bt_cierre_rango.setVisibility(View.INVISIBLE);
         bt_finanzas.setText("CONFIRMAR");
         bt_caja.setVisibility(View.INVISIBLE);
@@ -182,10 +182,10 @@ public class MainActivity extends AppCompatActivity {
         bt_finanzas.setClickable(true);
         bt_finanzas.setVisibility(View.VISIBLE);
         bt_aprob_recha.setVisibility(View.VISIBLE);
-        bt_cierre_general.setEnabled(true);
-        bt_cierre_general.setText("CIERRE GENERAL");
-        bt_cierre_general.setClickable(true);
-        bt_cierre_general.setVisibility(View.VISIBLE);
+        bt_agregar_cobrador.setEnabled(true);
+        bt_agregar_cobrador.setText("AGREGAR COBRADOR");
+        bt_agregar_cobrador.setClickable(true);
+        bt_agregar_cobrador.setVisibility(View.VISIBLE);
         bt_cierre_rango.setVisibility(View.VISIBLE);
         bt_finanzas.setText("VER VENDEDOR");
         bt_caja.setVisibility(View.VISIBLE);
@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
         bt_finanzas.setEnabled(false);
         bt_finanzas.setClickable(false);
         et_ID.setEnabled(false);
-        //bt_cierre_general.setVisibility(View.INVISIBLE);
         if (tv_saludo.getText().toString().equals("Login...")) {
             Log.v("Estado_financiero", "Main.\n\nflag_pedir_cambio: " + flag_pedir_cambio + "\n\n.");
 
@@ -341,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 //autenticar normal...
-                bt_cierre_general.setVisibility(View.VISIBLE);
+                bt_agregar_cobrador.setVisibility(View.VISIBLE);
                 if (tv_esperar.getText().toString().equals("Digite su usuario")) {
 
                     if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
@@ -397,17 +396,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void cierre_gen (View view) throws IOException {
+    public void agregar_cobrador (View view) throws IOException {
 
-        bt_cierre_general.setClickable(false);
-        bt_cierre_general.setEnabled(false);
+        bt_agregar_cobrador.setClickable(false);
+        bt_agregar_cobrador.setEnabled(false);
         bt_finanzas.setClickable(false);
         bt_finanzas.setVisibility(View.INVISIBLE);
         bt_finanzas.setEnabled(false);
         et_ID.setEnabled(false);
         if (tv_saludo.getText().toString().equals("Login...")) {
             Log.v("cierre_general", "Main.\n\nflag_pedir_cambio: " + flag_pedir_cambio + "\n\n.");
-            bt_cierre_general.setText("CONFIRMAR");
+            bt_agregar_cobrador.setText("CONFIRMAR");
 
             //autenticar normal...
             if (tv_esperar.getText().toString().equals("Ingrese su usuario")) {
@@ -417,8 +416,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
                 } else {
 
                     user = et_ID.getText().toString();
@@ -427,8 +426,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setText("");
                     et_ID.setHint("Password...");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
                 }
 
             } else if (tv_esperar.getText().toString().equals("Ingrese su password")) {
@@ -438,8 +437,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
                 } else {
 
                     password = et_ID.getText().toString();
@@ -454,8 +453,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
                 } else {
 
                     user = et_ID.getText().toString();
@@ -464,8 +463,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setText("");
                     et_ID.setHint("Password...");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
 
                 }
 
@@ -477,8 +476,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
                 } else {
 
                     password1 = et_ID.getText().toString();
@@ -487,8 +486,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setText("");
                     et_ID.setHint("Password...");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
 
                 }
 
@@ -500,8 +499,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
 
                 } else {
 
@@ -518,8 +517,8 @@ public class MainActivity extends AppCompatActivity {
                         et_ID.setText("");
                         et_ID.setHint("Usuario...");
                         et_ID.requestFocus();
-                        bt_cierre_general.setEnabled(true);
-                        bt_cierre_general.setClickable(true);
+                        bt_agregar_cobrador.setEnabled(true);
+                        bt_agregar_cobrador.setClickable(true);
                     }
 
                     tv_esperar.setText("Confirme su nuevo password");
@@ -527,8 +526,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.setText("");
                     et_ID.setHint("Password...");
                     et_ID.requestFocus();
-                    bt_cierre_general.setEnabled(true);
-                    bt_cierre_general.setClickable(true);
+                    bt_agregar_cobrador.setEnabled(true);
+                    bt_agregar_cobrador.setClickable(true);
 
                 }
 
@@ -539,8 +538,8 @@ public class MainActivity extends AppCompatActivity {
                 et_ID.setText("");
                 et_ID.requestFocus();
                 tv_esperar.setText("Ingrese su nuevo usuario");
-                bt_cierre_general.setEnabled(true);
-                bt_cierre_general.setClickable(true);
+                bt_agregar_cobrador.setEnabled(true);
+                bt_agregar_cobrador.setClickable(true);
 
             } else {
                 //Do nothing.
@@ -549,8 +548,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (tv_saludo.getText().toString().equals("*** MENU PRINCIPAL ***")) {
 
-            Intent cierre_general_ac = new Intent(this, Cierre_generalActivity.class);
-            startActivity(cierre_general_ac);
+            Intent agregar_cobrador = new Intent(this, Agregar_cobrador.class);
+            startActivity(agregar_cobrador);
             finish();
             System.exit(0);
 
@@ -778,8 +777,8 @@ public class MainActivity extends AppCompatActivity {
             et_ID.setText("");
             et_ID.setHint("Usuario...");
             et_ID.requestFocus();
-            bt_cierre_general.setEnabled(true);
-            bt_cierre_general.setClickable(true);
+            bt_agregar_cobrador.setEnabled(true);
+            bt_agregar_cobrador.setClickable(true);
         }
 
     }
