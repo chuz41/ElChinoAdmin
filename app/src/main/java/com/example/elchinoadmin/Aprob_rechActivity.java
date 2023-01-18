@@ -447,7 +447,10 @@ split2[47]: },{
                                 if (split.length > 0) {
                                     for (int i = 0; i < split.length; i++) {
                                         String[] split2 = split[i].split("\"");
-                                        Log.v("leer_solic_nube0", "Aprob_rech.\n\nsplit.length: " + split.length + "\n\nsplit[" + i + "]: " + split[i] + "\n\n.");
+                                        for (int ii = 0; ii < split2.length; ii++) {
+                                            Log.v("leer_solic_nube0[" + ii + "]", "split2[" + ii + "]: " + split2[ii]);
+                                        }
+
                                         if (split2.length > 1) {//solicitud ID [0]           valor ID [1]                 mensaje [2]              valor mensaje [3]                  apodo [4]                  monto perdonado [5]
                                             String linea_hash = split2[0] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split2[4] + "_sepa_linea_" + split2[6] + "_sepa_linea_" + apodo_cobrador + "_sepa_linea_" + split2[10];
                                             Log.v("leer_solic_nube1", "Caja.\n\nlinea_hash: " + linea_hash + "\n\n.");
