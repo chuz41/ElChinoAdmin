@@ -2,7 +2,6 @@ package com.example.elchinoadmin;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -15,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Cache;
@@ -30,7 +30,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elchinoadmin.Util.DateUtilities;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -80,13 +79,14 @@ public class HoyActivity extends AppCompatActivity {
     private int anio_I = 0;
     private int fecha_I = 0;;
     private Date fecha_hoy = new Date();
+    private EditText et_multiLine;
+    private Button bt_imprimir;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuentas);
-
         et_monto_prestado = (TextView) findViewById(R.id.et_monto_prestado);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
         et_balance_general = (TextView) findViewById(R.id.et_balance_general);
@@ -94,12 +94,15 @@ public class HoyActivity extends AppCompatActivity {
         et_monto_recuperado = (TextView) findViewById(R.id.et_monto_recuperado);
         tv_saludo = (TextView) findViewById(R.id.tv_saludo);
         tv_saludo.setText("Cierre de hoy");
+        bt_imprimir = (Button) findViewById(R.id.bt_imprimir);
+        bt_imprimir.setVisibility(View.INVISIBLE);
+        et_multiLine = (EditText) findViewById(R.id.et_multiLine);
+        et_multiLine.setVisibility(View.INVISIBLE);
         tv_monto_prestado = (TextView) findViewById(R.id.tv_monto_prestado);
         tv_balance_general = (TextView) findViewById(R.id.tv_balance_general);
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
         tv_monto_recuperado = (TextView) findViewById(R.id.tv_monto_recuperado);
         bt_cambiar_fecha = (Button) findViewById(R.id.bt_cambiar_fecha);
-
         Date fecha_hoy_D = Calendar.getInstance().getTime();
         String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
         String[] split_fecha_hoy = fecha_hoy_S.split("-");
@@ -111,12 +114,9 @@ public class HoyActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
-
         revisar_cobradores();
-
     }
 
     private void separar_fechaYhora (){
@@ -253,12 +253,9 @@ public class HoyActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-                //edad_cliente.autofill(AutofillValue.forText(String.valueOf(i2) + "/" + String.valueOf(i1+1) + "/" + String.valueOf(i)));
                 mes_I = i1+1;
                 anio_I = i;
                 fecha_I = i2;
-                //flag_fecha = true;
                 String i_s = String.valueOf(anio_I);
                 String i1_s = String.valueOf(mes_I);
                 String i2_s = String.valueOf(fecha_I);
@@ -282,8 +279,6 @@ public class HoyActivity extends AppCompatActivity {
                 }
                 separar_fechaYhora();
                 tv_fecha.setText(dia + "/" + mes + "/" + anio);
-
-                //Date fecha_D = DateUtilities.stringToDate(fecha_sig_S);
                 Log.v("cambiar_fecha0", "Hoy.\n\nDate inicio:\n\n" + fecha_hoy.toString() + "\n\n.");
                 String[] split_hoy_D = fecha_hoy.toString().split(" ");
                 sheet_creditos = split_hoy_D[0] + "-" + split_hoy_D[1] + "-" + split_hoy_D[2] + "-" + split_hoy_D[5] + "-creditos";
@@ -297,20 +292,11 @@ public class HoyActivity extends AppCompatActivity {
                 lineas.clear();
                 lineas2.clear();
                 revisar_cobradores();
-                //fecha_mostrar_inicio = (i2_s + "/" + i1_s + "/" + i_s);
                 Log.v("cambiar_fecha1", "Hoy.\n\nFecha antes de sumarle uno al mes:\n\n" + i2_s + "/" + i1_s + "/" + i_s + "\n\n.");
                 Log.v("cambiar_fecha2", "Hoy.\n\nFecha despues de sumarle uno al mes:\n\n" + String.valueOf(fecha_S) + "/" + String.valueOf(mes_S) + "/" + String.valueOf(anio_S));
             }
         },anio_I,mes_I,fecha_I);
         datePickerDialog.show();
-    }
-
-    private boolean linea_existe (String linea) {
-        boolean flag = true;
-
-
-
-        return flag;
     }
 
     private void leer_ventas_nube (String key, String value) {
@@ -406,43 +392,21 @@ split2[47]: },{
                                 cobradores.remove(key);
                                 String[] split = response.split("monto_credito");
                                 if (split.length > 1) {
-
                                     for (int i = 0; i < split.length; i++) {
                                         String[] split2 = split[i].split("\"");
                                         Log.v("leer_ventas_nube0", "HoyActivity.\n\nSplit.length: " + split.length + "\n\nsplit[" + i + "]: " + split[i] + "\n\n.");
                                         if (split2.length > 1) {
                                             String linea_hash = split2[42] + "_sepa_linea_" + split2[38] + "_sepa_linea_" + split2[22] + "_sepa_linea_" +
                                                     split2[6] + "_sepa_linea_" + split2[14] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split2[46] + "_sepa_linea_" + apodo_cobrador;
-
-
-                                            if (lineas.containsValue(linea_hash)) {
-                                                //Do nothing. Aqui se eliminan los archivos repetidos.
-                                            } else {
-                                                if (lineas.containsKey(split2[34])) {
-                                                    //Do nothing. Parece que no es necesario, pero no afecta tampoco.
-                                                } else {
+                                            if (!lineas.containsValue(linea_hash)) {
+                                                if (!lineas.containsKey(split2[34])) {
                                                     Log.v("leer_ventas_nube1", "Hoy.\n\nLinea hash: " + "\n\n" + linea_hash + "\n\n.");
                                                     lineas.put(split2[34], linea_hash);
                                                     monto_prestado_total = monto_prestado_total + Integer.parseInt(split2[2]);
-                                                    //monto_en_mora_a_hoy = monto_en_mora_a_hoy + Integer.parseInt(split2[46]);
                                                 }
                                             }
-                                        } else {
-                                            //Do nothing. Continue...
                                         }
-
-                                        //linea = linea + split2[34] + "_sepa_linea_" + split2[42] + "_sepa_linea_" + split2[36] + "_sepa_linea_" + split2[22] + "_sepa_linea_" + split2[6] +
-                                        //        "_sepa_linea_" + split2[14] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split2[44] + "_sepa_linea_";
-                                        /*if (linea_existe(linea)) {
-                                            agregar_linea_archivo(linea, "creditos.txt");
-                                        }
-                                        for (int u = 0; u < split2.length; u++) {
-                                            Log.v("leer_ventas_nube1", "split2[" + u + "]: " + split2[u]);
-                                        }*/
-
                                     }
-                                } else {
-                                    //Do nothing.
                                 }
                                 mostrar_todo();
                                 revisar_ventas_de_hoy();

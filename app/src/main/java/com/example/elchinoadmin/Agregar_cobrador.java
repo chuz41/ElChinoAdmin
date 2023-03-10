@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Cache;
@@ -82,13 +83,13 @@ public class Agregar_cobrador extends AppCompatActivity {
     private int fecha_I = 0;
     private Button bt_volver;
     private Date fecha_hoy = new Date();
+    private EditText textMultiLine;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuentas);
-
         et_monto_prestado = (TextView) findViewById(R.id.et_monto_prestado);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
         et_balance_general = (TextView) findViewById(R.id.et_balance_general);
@@ -96,13 +97,14 @@ public class Agregar_cobrador extends AppCompatActivity {
         et_monto_recuperado = (TextView) findViewById(R.id.et_monto_recuperado);
         tv_saludo = (TextView) findViewById(R.id.tv_saludo);
         tv_saludo.setText("Cierre de hoy");
+        textMultiLine = (EditText) findViewById(R.id.et_multiLine);
+        textMultiLine.setVisibility(View.INVISIBLE);
         tv_monto_prestado = (TextView) findViewById(R.id.tv_monto_prestado);
         tv_balance_general = (TextView) findViewById(R.id.tv_balance_general);
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
         tv_monto_recuperado = (TextView) findViewById(R.id.tv_monto_recuperado);
         bt_cambiar_fecha = (Button) findViewById(R.id.bt_cambiar_fecha);
         bt_volver = (Button) findViewById(R.id.bt_volver);
-
         Date fecha_hoy_D = Calendar.getInstance().getTime();
         String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
         String[] split_fecha_hoy = fecha_hoy_S.split("-");
@@ -114,13 +116,11 @@ public class Agregar_cobrador extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
         mostrar_todo();
         ocultar_todo("En construccion.\nVolveremos pronto....");
         onClickListener_volver();
-
     }
 
     private void separar_fechaYhora() {

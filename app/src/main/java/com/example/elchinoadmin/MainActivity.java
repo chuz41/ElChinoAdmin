@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
         et_ID.setVisibility(View.INVISIBLE);
         bt_aprob_recha = (Button) findViewById(R.id.bt_aprob_recha);
         bt_cierre_rango = (Button) findViewById(R.id.bt_cierre_rango);
+        bt_cierre_rango.setVisibility(View.INVISIBLE);
         bt_finanzas = (Button) findViewById(R.id.bt_finanzas);
         bt_caja = (Button) findViewById(R.id.bt_caja);
         bt_hoy = (Button) findViewById(R.id.bt_hoy);
+        bt_hoy.setVisibility(View.INVISIBLE);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
         bt_agregar_cobrador = (Button) findViewById(R.id.bt_agregar_cobrador);
         separar_fechaYhora();
@@ -91,27 +93,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void crear_archivos_config() {
-
         String[] archivos = fileList();
-
         if (archivo_existe(archivos, "creditos.txt")) {
-            //Do nothitng.
-        } else  {
             crear_archivo("creditos.txt");
         }
-
-        if (archivo_existe(archivos, "abonos.txt")) {
-            //Do nothitng.
-        } else  {
-            crear_archivo("abonos.txt");
+        if (!archivo_existe(archivos, "abonos.txt")) {
+            crear_archivo("abonos.txt");crear_archivo("abonos.txt");
         }
-
-        if (archivo_existe(archivos, "solicitudes.txt")) {
-            //Do nothitng.
-        } else  {
+        if (!archivo_existe(archivos, "solicitudes.txt")) {
             crear_archivo("solicitudes.txt");
         }
-
     }
 
     private String obtener_dia_espaniol (String dia_ingles) {
@@ -131,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
             flag = "Viernes";
         } else if (dia_ingles.equals("Sat")) {
             flag = "Sabado";
-        } else {
-            //Do nothing.
         }
         return flag;
     }
@@ -154,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
             flag = "Fri";
         } else if (dia_espaniol.equals("Sabado")) {
             flag = "Sat";
-        } else {
-            //Do nothing.
         }
         return flag;
     }
@@ -171,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
         bt_finanzas.setText("CONFIRMAR");
         bt_caja.setVisibility(View.INVISIBLE);
         bt_hoy.setVisibility(View.INVISIBLE);
-
     }
 
     private void mostrar_todo () {
@@ -185,14 +171,12 @@ public class MainActivity extends AppCompatActivity {
         bt_agregar_cobrador.setEnabled(true);
         bt_agregar_cobrador.setText("AGREGAR COBRADOR");
         bt_agregar_cobrador.setClickable(true);
-        bt_agregar_cobrador.setVisibility(View.VISIBLE);
-        bt_cierre_rango.setVisibility(View.VISIBLE);
+        bt_agregar_cobrador.setVisibility(View.INVISIBLE);
+        bt_cierre_rango.setVisibility(View.INVISIBLE);
         bt_finanzas.setText("VER VENDEDOR");
         bt_caja.setVisibility(View.VISIBLE);
-        bt_hoy.setVisibility(View.VISIBLE);
-
+        bt_hoy.setVisibility(View.INVISIBLE);
     }
-
 
     private void revisar_archivos_autent () {
         ocultar_todo();
@@ -212,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
                         user = split[1];
                     } else if (split[0].equals("password")) {
                         password = split[1];
-                    } else {
-                        //Do nothing.
                     }
                     contenido = contenido + linea + "\n";
                     linea = br.readLine();
@@ -223,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         } else {
             flag_pedir_cambio = true;
         }
@@ -231,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void autenticar () {
-
         if (flag_pedir_cambio) {
             tv_esperar.setText("Debe crear su usuario y password!");
             et_ID.setText("");
@@ -243,8 +223,6 @@ public class MainActivity extends AppCompatActivity {
             et_ID.setHint("Usuario...");
             et_ID.requestFocus();
         }
-
-
     }
 
     public void hoy (View view) {
@@ -262,15 +240,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void estado_financiero (View view) throws IOException {
-
         bt_finanzas.setEnabled(false);
         bt_finanzas.setClickable(false);
         et_ID.setEnabled(false);
         if (tv_saludo.getText().toString().equals("Login...")) {
             Log.v("Estado_financiero", "Main.\n\nflag_pedir_cambio: " + flag_pedir_cambio + "\n\n.");
-
             if (flag_pedir_cambio) {
-
                 if (tv_esperar.getText().toString().equals("Debe crear su usuario y password!") | tv_esperar.getText().toString().equals("Ingrese su nuevo usuario")) {
                     if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                         msg("Debe ingresar un usuario!!!");
@@ -299,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
                         bt_finanzas.setEnabled(true);
                         bt_finanzas.setClickable(true);
                     } else {
-
                         password1 = et_ID.getText().toString();
                         tv_esperar.setText("Confirme su nuevo password");
                         et_ID.setEnabled(true);
@@ -308,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
                         et_ID.requestFocus();
                         bt_finanzas.setEnabled(true);
                         bt_finanzas.setClickable(true);
-
                     }
                 } else if (tv_esperar.getText().toString().equals("Confirme su nuevo password")) {
                     if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
@@ -335,14 +308,11 @@ public class MainActivity extends AppCompatActivity {
                             bt_finanzas.setClickable(true);
                         }
                     }
-                } else {
-                    //Do nothing.
                 }
             } else {
                 //autenticar normal...
-                bt_agregar_cobrador.setVisibility(View.VISIBLE);
+                bt_agregar_cobrador.setVisibility(View.INVISIBLE);
                 if (tv_esperar.getText().toString().equals("Digite su usuario")) {
-
                     if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                         msg("Debe ingresar un usuario!!!");
                         et_ID.setEnabled(true);
@@ -351,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                         bt_finanzas.setEnabled(true);
                         bt_finanzas.setClickable(true);
                     } else {
-
                         user = et_ID.getText().toString();
                         tv_esperar.setText("Digite su password");
                         et_ID.setEnabled(true);
@@ -361,9 +330,7 @@ public class MainActivity extends AppCompatActivity {
                         bt_finanzas.setEnabled(true);
                         bt_finanzas.setClickable(true);
                     }
-
                 } else if (tv_esperar.getText().toString().equals("Digite su password")) {
-
                     if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                         msg("Debe ingresar un password!!!");
                         et_ID.setEnabled(true);
@@ -372,32 +339,21 @@ public class MainActivity extends AppCompatActivity {
                         bt_finanzas.setEnabled(true);
                         bt_finanzas.setClickable(true);
                     } else {
-
                         password = et_ID.getText().toString();
                         tv_esperar.setText("Digite su password");
-
                         verificar_usuario();
-
                     }
-
                 }
             }
-
-
         } else if (tv_saludo.getText().toString().equals("*** MENU PRINCIPAL ***")) {
-
             Intent finanzas_ac = new Intent(this, FinanzasActivity.class);
             startActivity(finanzas_ac);
             finish();
             System.exit(0);
-
-        } else {
-            //Do nothing.
         }
     }
 
     public void agregar_cobrador (View view) throws IOException {
-
         bt_agregar_cobrador.setClickable(false);
         bt_agregar_cobrador.setEnabled(false);
         bt_finanzas.setClickable(false);
@@ -407,10 +363,8 @@ public class MainActivity extends AppCompatActivity {
         if (tv_saludo.getText().toString().equals("Login...")) {
             Log.v("cierre_general", "Main.\n\nflag_pedir_cambio: " + flag_pedir_cambio + "\n\n.");
             bt_agregar_cobrador.setText("CONFIRMAR");
-
             //autenticar normal...
             if (tv_esperar.getText().toString().equals("Ingrese su usuario")) {
-
                 if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                     msg("Debe ingresar un usuario!!!");
                     et_ID.setEnabled(true);
@@ -419,7 +373,6 @@ public class MainActivity extends AppCompatActivity {
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
                 } else {
-
                     user = et_ID.getText().toString();
                     tv_esperar.setText("Ingrese su password");
                     et_ID.setEnabled(true);
@@ -429,9 +382,7 @@ public class MainActivity extends AppCompatActivity {
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
                 }
-
             } else if (tv_esperar.getText().toString().equals("Ingrese su password")) {
-
                 if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                     msg("Debe ingresar un password!!!");
                     et_ID.setEnabled(true);
@@ -440,14 +391,10 @@ public class MainActivity extends AppCompatActivity {
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
                 } else {
-
                     password = et_ID.getText().toString();
                     verificar_usuario2();
-
                 }
-
             } else if (tv_esperar.getText().toString().equals("Ingrese su nuevo usuario")) {
-
                 if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                     msg("Debe ingresar un usuario!!!");
                     et_ID.setEnabled(true);
@@ -456,7 +403,6 @@ public class MainActivity extends AppCompatActivity {
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
                 } else {
-
                     user = et_ID.getText().toString();
                     tv_esperar.setText("Digite su nuevo password");
                     et_ID.setEnabled(true);
@@ -465,12 +411,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.requestFocus();
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
-
                 }
-
-
             } else if (tv_esperar.getText().toString().equals("Digite su nuevo password")) {
-
                 if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
                     msg("Debe ingresar un password!!!");
                     et_ID.setEnabled(true);
@@ -479,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
                 } else {
-
                     password1 = et_ID.getText().toString();
                     tv_esperar.setText("Confirme su nuevo password");
                     et_ID.setEnabled(true);
@@ -488,24 +429,17 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.requestFocus();
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
-
                 }
-
             } else if (tv_esperar.getText().toString().equals("Confirme su nuevo password")) {
-
                 if (et_ID.getText().toString().equals("") | et_ID.getText().toString().isEmpty()) {
-
                     msg("Debe ingresar un password!!!");
                     et_ID.setEnabled(true);
                     et_ID.setText("");
                     et_ID.requestFocus();
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
-
                 } else {
-
                     password2 = et_ID.getText().toString();
-
                     if (password1.equals(password2)) {
                         password = password1;
                         msg("Ususario y password cambiados con exito!");
@@ -520,7 +454,6 @@ public class MainActivity extends AppCompatActivity {
                         bt_agregar_cobrador.setEnabled(true);
                         bt_agregar_cobrador.setClickable(true);
                     }
-
                     tv_esperar.setText("Confirme su nuevo password");
                     et_ID.setEnabled(true);
                     et_ID.setText("");
@@ -528,11 +461,8 @@ public class MainActivity extends AppCompatActivity {
                     et_ID.requestFocus();
                     bt_agregar_cobrador.setEnabled(true);
                     bt_agregar_cobrador.setClickable(true);
-
                 }
-
             } else if (tv_esperar.getText().toString().equals("Digite su password")) {
-
                 msg("Cambio de usuario y/o password!!!");
                 et_ID.setEnabled(true);
                 et_ID.setText("");
@@ -540,21 +470,12 @@ public class MainActivity extends AppCompatActivity {
                 tv_esperar.setText("Ingrese su nuevo usuario");
                 bt_agregar_cobrador.setEnabled(true);
                 bt_agregar_cobrador.setClickable(true);
-
-            } else {
-                //Do nothing.
             }
-
-
         } else if (tv_saludo.getText().toString().equals("*** MENU PRINCIPAL ***")) {
-
             Intent agregar_cobrador = new Intent(this, Agregar_cobrador.class);
             startActivity(agregar_cobrador);
             finish();
             System.exit(0);
-
-        } else {
-            //Do nothing.
         }
     }
 
@@ -677,18 +598,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void boton_atras () {
-        //ocultar_teclado();
         if (flag_salir) {
             finish();
             System.exit(0);
         } else {
             flag_salir = true;
         }
-
     }
 
     private void verificar_usuario () {
-
         boolean flag_password = false;
         boolean flag_user = false;
         try {
@@ -708,8 +626,6 @@ public class MainActivity extends AppCompatActivity {
                         flag_password = true;
                     }
 
-                } else {
-                    //Do nothing.
                 }
                 linea = br.readLine();
             }
@@ -736,14 +652,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void verificar_usuario2 () {
-
         boolean flag_password = false;
         boolean flag_user = false;
         try {
             InputStreamReader archivo = new InputStreamReader(openFileInput(autent));//Se abre archivo
             BufferedReader br = new BufferedReader(archivo);
             String linea = br.readLine();//Se lee archivo
-
             while (linea != null) {
                 Log.v("verificar_usuario20", "Main. Linea: " + linea);
                 String[] split = linea.split(" ");
@@ -755,9 +669,6 @@ public class MainActivity extends AppCompatActivity {
                     if (password.equals(split[1])) {
                         flag_password = true;
                     }
-
-                } else {
-                    //Do nothing.
                 }
                 linea = br.readLine();
             }
@@ -766,7 +677,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         if (flag_password & flag_user) {
             msg("Password aceptado!");
             cambiar_password();
@@ -780,24 +690,18 @@ public class MainActivity extends AppCompatActivity {
             bt_agregar_cobrador.setEnabled(true);
             bt_agregar_cobrador.setClickable(true);
         }
-
     }
 
     private void cambiar_password () {
-
         tv_esperar.setText("Digite su nuevo usuario");
         msg("Ingrese sus nuevas credenciales...");
         et_ID.setEnabled(true);
         et_ID.setText("");
         et_ID.setHint("Usuario...");
         et_ID.requestFocus();
-
-
-
     }
 
     private void guardar_usuario () throws IOException {
-        //borrar_archivo(autent);
         crear_archivo(autent);
         guardar("user " + user + "\npassword " + password, autent);
         flag_pedir_cambio = false;
@@ -825,6 +729,7 @@ public class MainActivity extends AppCompatActivity {
             archivo.flush();
             archivo.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

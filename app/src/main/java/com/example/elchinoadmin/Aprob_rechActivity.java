@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,8 @@ public class Aprob_rechActivity extends AppCompatActivity {
     private TextView tv_auxiliar;
     private TextView tv_multiline;
     private String solicitudes_file = "solicitudes.txt";
+    private EditText et_multiLine;
+    private Button bt_imprimir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,8 @@ public class Aprob_rechActivity extends AppCompatActivity {
         et_monto_recuperado = (TextView) findViewById(R.id.et_monto_recuperado);
         tv_saludo = (TextView) findViewById(R.id.tv_saludo);
         tv_saludo.setText("Cierre de hoy");
+        et_multiLine = (EditText) findViewById(R.id.et_multiLine);
+        et_multiLine.setVisibility(View.INVISIBLE);
         tv_monto_prestado = (TextView) findViewById(R.id.tv_monto_prestado);
         tv_balance_general = (TextView) findViewById(R.id.tv_balance_general);
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
@@ -109,6 +114,8 @@ public class Aprob_rechActivity extends AppCompatActivity {
         tv_auxiliar = (TextView) findViewById(R.id.tv_auxiliar);
         tv_multiline = (TextView) findViewById(R.id.tv_multiline);
         bt_volver = (Button) findViewById(R.id.bt_volver);
+        bt_imprimir = (Button) findViewById(R.id.bt_imprimir);
+        bt_imprimir.setVisibility(View.INVISIBLE);
         Date fecha_hoy_D = Calendar.getInstance().getTime();
         String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
         String[] split_fecha_hoy = fecha_hoy_S.split("-");

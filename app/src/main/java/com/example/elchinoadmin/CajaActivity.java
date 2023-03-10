@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,13 +76,16 @@ public class CajaActivity extends AppCompatActivity {
     private Integer monto_en_mora_a_hoy = 0;
     private Integer balance_general = 0;
     private Integer cajas_total = 0;
+    private EditText et_multiLine;
+    private Button bt_imprimir;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuentas);
-
+        et_multiLine = (EditText) findViewById(R.id.et_multiLine);
+        et_multiLine.setVisibility(View.INVISIBLE);
         et_monto_prestado = (TextView) findViewById(R.id.et_monto_prestado);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
         et_balance_general = (TextView) findViewById(R.id.et_balance_general);
@@ -93,6 +98,8 @@ public class CajaActivity extends AppCompatActivity {
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
         tv_monto_recuperado = (TextView) findViewById(R.id.tv_monto_recuperado);
         spinner = (Spinner) findViewById(R.id.spinner);
+        bt_imprimir = (Button) findViewById(R.id.bt_imprimir);
+        bt_imprimir.setVisibility(View.INVISIBLE);
         //spinner.setVisibility(View.VISIBLE);
 
         separar_fechaYhora();

@@ -3,7 +3,6 @@ package com.example.elchinoadmin.Util;
 //Realiza tareas referentes a calculos con fechas. Equivale a la clase LocalDate del api 26
 
 import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,30 +13,28 @@ import java.util.concurrent.TimeUnit;
 
 public class DateUtilities {
 
-    private static String dia;
     private static String mes;
     private static String anio;
     private static String fecha;
     private static Map<String, Integer> meses = new HashMap<String, Integer>();
 
-    public static int daysBetween(Date fecha_inicio, Date fecha_final) {
-        int diferencia = 0;
+    public static int daysBetween (Date fecha_inicio, Date fecha_final) {
+        int diferencia;
         long tiempo_transcurrido = fecha_inicio.getTime() - fecha_final.getTime();
         TimeUnit unidad = TimeUnit.DAYS;
         long dias = unidad.convert(tiempo_transcurrido, TimeUnit.MILLISECONDS);
-        Log.v("DateUtilities0", "daysBetween.\n\ndias (long): " + dias + "\n\n.");
         diferencia = (int) dias;
         return diferencia;
     }
 
-    public static Date stringToDate(String fechaS) throws ParseException {
+    public static Date stringToDate (String fechaS) throws ParseException {
         Date date;
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         date = formato.parse(fechaS);
         return date;
     }
 
-    public static Date addDays(Date fecha_inicio, int days) throws ParseException {
+    public static Date addDays (Date fecha_inicio, int days) {
         Date date;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha_inicio);
@@ -46,7 +43,106 @@ public class DateUtilities {
         return date;
     }
 
-    public static Date addWeeks(Date fechaS, int weeks) throws ParseException {
+    public static Date addQuincenas (Date fecha, int quincenas, Date fecha_credito) {
+        String[] split = fecha_credito.toString().split(" ");
+        int fecha_init = Integer.parseInt(split[2]);
+        int suma = quincenas * 2;
+        fecha = addWeeks(fecha, suma);
+        Date date;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        date = calendar.getTime();
+        Date fecha_backUp = date;
+        split = date.toString().split(" ");
+        int fecha_end = Integer.parseInt(split[2]);
+        if (fecha_init != fecha_end) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            date = calendar.getTime();
+            split = date.toString().split(" ");
+            fecha_end = Integer.parseInt(split[2]);
+            if (fecha_init != fecha_end) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                date = calendar.getTime();
+                split = date.toString().split(" ");
+                fecha_end = Integer.parseInt(split[2]);
+                if (fecha_init != fecha_end) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                    date = calendar.getTime();
+                    split = date.toString().split(" ");
+                    fecha_end = Integer.parseInt(split[2]);
+                    if (fecha_init != fecha_end) {
+                        calendar.add(Calendar.DAY_OF_YEAR, -4);
+                        date = calendar.getTime();
+                        split = date.toString().split(" ");
+                        fecha_end = Integer.parseInt(split[2]);
+                        if (fecha_init != fecha_end) {
+                            calendar.add(Calendar.DAY_OF_YEAR, -1);
+                            date = calendar.getTime();
+                            split = date.toString().split(" ");
+                            fecha_end = Integer.parseInt(split[2]);
+                            if (fecha_init != fecha_end) {
+                                calendar.add(Calendar.DAY_OF_YEAR, -1);
+                                date = calendar.getTime();
+                                split = date.toString().split(" ");
+                                fecha_end = Integer.parseInt(split[2]);
+                                if (fecha_init != fecha_end) {
+                                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                                    date = calendar.getTime();
+                                    split = date.toString().split(" ");
+                                    fecha_end = Integer.parseInt(split[2]);
+                                    if (fecha_init != fecha_end) {
+                                        date = fecha_backUp;
+                                        date = addDays(date, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (fecha_init == fecha_end) {
+            date = calendar.getTime();
+        } else {
+        }
+        return date;
+    }
+
+    public static Date addMonths (Date fecha, int months){
+
+        String[] split = fecha.toString().split(" ");
+        int fecha_init = Integer.parseInt(split[2]);
+        int suma = months * 4;
+        fecha = addWeeks(fecha, suma);
+        Date date;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        date = calendar.getTime();
+        split = date.toString().split(" ");
+        int fecha_end = Integer.parseInt(split[2]);
+        if (fecha_init != fecha_end) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+            date = calendar.getTime();
+            split = date.toString().split(" ");
+            fecha_end = Integer.parseInt(split[2]);
+            if (fecha_init != fecha_end) {
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                date = calendar.getTime();
+                split = date.toString().split(" ");
+                fecha_end = Integer.parseInt(split[2]);
+                if (fecha_init != fecha_end) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                    date = calendar.getTime();
+                }
+            }
+        } else if (fecha_init == fecha_end) {
+            date = calendar.getTime();
+        } else {
+        }
+        Log.v("addMonths0", "DateUtilities.\n\nfecha inicial:\n\n" + fecha + "\n\nfecha final:\n\n" + date + "\n\n.");
+        return date;
+    }
+
+    public static Date addWeeks (Date fechaS, int weeks) {
         Date date;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fechaS);
@@ -55,26 +151,33 @@ public class DateUtilities {
         return date;
     }
 
-    public static String dateToString(Date fechaLd) {
+    public static String dateToString (Date fechaLd) {
         String date;
         llenar_mapa_meses();
         separar_fechaYhora(fechaLd);
+
+        if (mes.length() == 1) {
+            mes = "0" + mes;
+        }
+        if (fecha.length() == 1) {
+            fecha = "0" + fecha;
+        }
+
         date = anio + "-" + mes + "-" + fecha;
         return date;
     }
 
-    private static void separar_fechaYhora(Date fechaLd){
+    private static void separar_fechaYhora (Date fechaLd){
         String fechaS = fechaLd.toString();
         String[] split = fechaS.split(" ");
-        dia = split[2];
         mes = String.valueOf(meses.get(split[1]));
         anio = split[5];
         String hora_completa = split[3];
         fecha = split[2];
-        split = hora_completa.split(":");
+        //split = hora_completa.split(":");
     }
 
-    private static void llenar_mapa_meses() {
+    private static void llenar_mapa_meses () {
         meses.put("Jan",1);
         meses.put("Feb",2);
         meses.put("Mar",3);

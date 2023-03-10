@@ -2,7 +2,6 @@ package com.example.elchinoadmin;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -15,9 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,7 +27,6 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.example.elchinoadmin.Util.DateUtilities;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -90,13 +88,13 @@ public class Cierre_rangoActivity extends AppCompatActivity {
     private Button bt_confirmar;
     private Date fecha_param = new Date();
     private Date fecha_hoy = new Date();
-
+    private EditText et_multiLine;
+    private Button bt_imprimir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuentas);
-
         et_monto_prestado = (TextView) findViewById(R.id.et_monto_prestado);
         tv_fecha = (TextView) findViewById(R.id.tv_fecha);
         et_balance_general = (TextView) findViewById(R.id.et_balance_general);
@@ -104,6 +102,10 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         et_monto_recuperado = (TextView) findViewById(R.id.et_monto_recuperado);
         tv_saludo = (TextView) findViewById(R.id.tv_saludo);
         tv_saludo.setText("Rango de fechas");
+        bt_imprimir = (Button) findViewById(R.id.bt_imprimir);
+        bt_imprimir.setVisibility(View.INVISIBLE);
+        et_multiLine = (EditText) findViewById(R.id.et_multiLine);
+        et_multiLine.setVisibility(View.INVISIBLE);
         tv_monto_prestado = (TextView) findViewById(R.id.tv_monto_prestado);
         tv_balance_general = (TextView) findViewById(R.id.tv_balance_general);
         tv_monto_mora = (TextView) findViewById(R.id.tv_monto_mora);
@@ -116,7 +118,6 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         bt_confirmar.setVisibility(View.VISIBLE);
         bt_confirmar.setClickable(false);
         bt_confirmar.setEnabled(false);
-
         Date fecha_hoy_D = Calendar.getInstance().getTime();
         String fecha_hoy_S = DateUtilities.dateToString(fecha_hoy_D);
         String[] split_fecha_hoy = fecha_hoy_S.split("-");
@@ -128,17 +129,10 @@ public class Cierre_rangoActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         separar_fechaYhora();
         tv_fecha.setText(dia + "/" + mes + "/" + anio);
-
-
         ocultar_todo("buscando...");
-
         revisar_cobradores();
-
-        //revisar_cobradores();
-
     }
 
     private void separar_fechaYhora (){
@@ -924,25 +918,15 @@ split2[47]: },{
                                             String linea_hash = split2[42] + "_sepa_linea_" + split2[38] + "_sepa_linea_" + split2[22] + "_sepa_linea_" +
                                                     split2[6] + "_sepa_linea_" + split2[14] + "_sepa_linea_" + split2[2] + "_sepa_linea_" + split2[46] + "_sepa_linea_" +
                                                     apodo_cobrador + "_sepa_linea_" + split2[50];
-
-
-                                            if (lineas2.containsValue(linea_hash)) {
-                                                //Do nothing. Aqui se eliminan los archivos repetidos.
-                                            } else {
+                                            if (!lineas2.containsValue(linea_hash)) {
                                                 Log.v("leer_cobros_nube1", "Hoy.\n\nLinea hash: " + "\n\n" + linea_hash + "\n\n.");
                                                 lineas2.put(i, linea_hash);
                                                 monto_recuperado_total = monto_recuperado_total + Integer.parseInt(split2[50]);
                                                 monto_en_mora_a_hoy = monto_en_mora_a_hoy + Integer.parseInt(split2[46]);
                                             }
-                                        } else {
-                                            //Do nothing. Continue...
                                         }
-
                                     }
-                                } else {
-                                    //Do nothing.
                                 }
-                                //mostrar_todo();
                                 try {
                                     leer_cobros_de_hoy(cobradores_helper2, sheet);
                                 } catch (ParseException e) {
@@ -1014,18 +998,11 @@ split2[47]: },{
                                             String value = split2[14] + "_separador_" + split2[18] + "_separador_" + split2[34] + "_separador_";//SpreadSheet_creditos_separador_SpreadSheet_clientes_separador_apodo_coberador_separador_
                                             cobradores.put(key, value);
                                             cobradores2.put(key, value);
-                                        } else {
-                                            //Do nothing.
                                         }
-
                                     }
-                                } else {
-                                    //Do nothing.
                                 }
-                                //mostrar_todo();
                                 lineas2.clear();
                                 obtener_ventas_rango();
-                                //revisar_ventas_de_hoy();
                             } else {
                                 msg("No fue posible conectar con el servidor!!!\nIntente de nuevo...");
                                 mostrar_todo();
