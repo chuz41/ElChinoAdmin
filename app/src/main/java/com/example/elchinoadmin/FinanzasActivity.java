@@ -377,13 +377,17 @@ public class FinanzasActivity extends AppCompatActivity {
                     int lalrgo = split.length;
                     Log.v("generar_cierre0", "Finanzas.\n\nlinea:\n\n" + linea + "\n\ncont: " + cont_abonar + "\n\nlargo_split: " + lalrgo + "\n\n.");
                     String persona = new String();
+                    String personaRuta = new String();
                     if (lalrgo == 3) {
                         persona = "cobrador";
                     } else if (lalrgo == 4) {
                         persona = split[3];
-                        String splitPersona[] = persona.split("_P_");
-                        String nombreCliente = getNombreCliente(splitPersona[0]);
-                        persona = nombreCliente;
+                        personaRuta = persona;
+                        if (persona.contains("_P_")) {
+                            String splitPersona[] = persona.split("_P_");
+                            String nombreCliente = getNombreCliente(splitPersona[0]);
+                            persona = nombreCliente;
+                        }
                     }
                     String tipo = split[0];
                     String monto = split[1];
@@ -398,6 +402,13 @@ public class FinanzasActivity extends AppCompatActivity {
                         creditos.put(cont_creditos, frase);
                         cont_creditos++;
                     } else if (tipo.equals("banca")) {
+                        String[] splitFrase = frase.split(" ");
+                        int largoSplitFrase = splitFrase.length;
+                        if (largoSplitFrase == 3) {
+                            frase = frase + " " + personaRuta;
+                        } else {
+                            frase = frase.replace(persona, personaRuta);
+                        }
                         Log.v("generar_cierre3", "Cierre.\n\ncont: " + cont_bancas + "\n\nvalue: " + frase + "\n\n.");
                         bancas.put(cont_bancas, frase);
                         cont_bancas++;
@@ -465,17 +476,26 @@ public class FinanzasActivity extends AppCompatActivity {
                     String value = bancas.get(key);
                     String[] split_value = value.split(" ");
                     int valor_monto = Integer.parseInt(split_value[1]);
+                    String persona = split_value[3];
                     String pre_mensaje = "";
-                    if (valor_monto < 0) {
-                        pre_mensaje = "Se entrega a banca:";
-                        valor_monto = valor_monto * -1;
-                        balance_general_banca_recibe = balance_general_banca_recibe + valor_monto;
+                    if (persona.equals("banca")) {
+                        if (valor_monto < 0) {
+                            pre_mensaje = "Se entrega a banca:";
+                            valor_monto = valor_monto * -1;
+                            balance_general_banca_recibe = balance_general_banca_recibe + valor_monto;
+                        } else {
+                            pre_mensaje = "Se recibe de banca:";
+                            balance_general_banca_entrega = balance_general_banca_entrega + valor_monto;
+                        }
+                        contenido_cierre = contenido_cierre + pre_mensaje + ":\nMonto: " +
+                                String.valueOf(valor_monto) + " colones.\n\n*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#\n\n";
                     } else {
-                        pre_mensaje = "Se recibe de banca:";
+                        persona = persona.replace("_", " ");
+                        pre_mensaje = "Se utilizan " + (-1 * valor_monto) + " colones\nde los fondos de caja para\ncubrir gastos de ruta.\n\nNotas:\n"
+                                + persona + "\n\n*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#\n\n";
+                        contenido_cierre = contenido_cierre + pre_mensaje;
                         balance_general_banca_entrega = balance_general_banca_entrega + valor_monto;
                     }
-                    contenido_cierre = contenido_cierre + pre_mensaje + ":\nMonto: " +
-                            String.valueOf(valor_monto) + " colones.\n\n*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#\n\n";
                 }
             }
             contenido_cierre = contenido_cierre + "\nFirma cobrador:\n\n__________________\nNombre: " + nombreCobrador + ".\n\n" +
@@ -1097,7 +1117,9 @@ split2[47]: },{
                                             if (split2.length > 1) {
                                                 String key = split2[22];//cobrador_ID
                                                 String value = split2[14] + "_separador_" + split2[18] + "_separador_" + split2[34] + "_separador_";//SpreadSheet_creditos_separador_SpreadSheet_clientes_separador_apodo_cobrador_separador_
-                                                cobradores.put(key, value);
+                                                if (split2[2].equals("TRUE")) {
+                                                    cobradores.put(key, value);
+                                                }
                                             }
                                         }
                                     }
@@ -1170,9 +1192,11 @@ split2[35]: }]
             //String value = split2[14] + "_separador_" + split2[18] + "_separador_" + split2[34] + "_separador_";//SpreadSheet_creditos_separador_SpreadSheet_clientes_separador_apodo_cobrador_separador_
             String[] split = cobradores.get(key).split("_separador_");
             String apodo_cobrador = split[2];
-            cobradores_S = cobradores_S + apodo_cobrador + "___";
+            if (!apodo_cobrador.equals("apodo")) {
+                cobradores_S = cobradores_S + apodo_cobrador + "___";
+            }
         }
-        Log.v("llenar_spinner_0", "Finanzas.\n\nCcobradores:\n\n" + cobradores_S + "\n\n.");
+        Log.v("llenar_spinner_0", "Finanzas.\n\nCobradores:\n\n" + cobradores_S + "\n\n.");
         String[] split_spinner = cobradores_S.split("___");
         spinner.setEnabled(true);
         spinner.setVisibility(View.VISIBLE);

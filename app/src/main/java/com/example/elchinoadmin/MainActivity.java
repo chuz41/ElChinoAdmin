@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         bt_agregar_cobrador.setEnabled(true);
         bt_agregar_cobrador.setText("AGREGAR COBRADOR");
         bt_agregar_cobrador.setClickable(true);
-        bt_agregar_cobrador.setVisibility(View.INVISIBLE);
+        bt_agregar_cobrador.setVisibility(View.VISIBLE);
         bt_cierre_rango.setVisibility(View.INVISIBLE);
         bt_finanzas.setText("VER VENDEDOR");
         bt_caja.setVisibility(View.VISIBLE);
